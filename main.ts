@@ -6,6 +6,7 @@ namespace SpriteKind {
     export const Bossprojectile = SpriteKind.create()
 }
 function spawnBoss () {
+    BossAlive = true
     Boss1 = sprites.create(img`
         ........5......5........
         ........5..55..5........
@@ -32,111 +33,18 @@ function spawnBoss () {
         ........................
         ........................
         `, SpriteKind.Boss)
-    tiles.placeOnTile(Boss1, tiles.getTileLocation(18, 7))
     bossHealth = statusbars.create(20, 4, StatusBarKind.Health)
+    tiles.placeOnRandomTile(Boss1, sprites.dungeon.collectibleBlueCrystal)
     bossHealth.attachToSprite(Boss1)
-    bossHealth.max = 50
-    bossHealth.value = 50
-    info.setLife(10)
-    Boss1.follow(Warrior, 60)
+    bossHealth.value = 20
+    Boss1.follow(Warrior, 55)
     statusbar = statusbars.create(65, 10, StatusBarKind.EnemyHealth)
     statusbar.value = 100
     statusbar.positionDirection(CollisionDirection.Top)
     statusbar.setBarBorder(2, 15)
     statusbar.setColor(2, 11, 4)
+    statusbar.setStatusBarFlag(StatusBarFlag.SmoothTransition, true)
     statusbar.attachToSprite(Boss1)
-    for (let index = 0; index < 100; index++) {
-        if (Boss1.vx < 0) {
-            xDirection = -100
-            yDirection = 0
-            BossProj = sprites.createProjectileFromSprite(img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . 4 4 . . . . . . . 
-                . . . . . . 4 5 5 4 . . . . . . 
-                . . . . . . 2 5 5 2 . . . . . . 
-                . . . . . . . 2 2 . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                `, Boss1, xDirection, yDirection)
-            BossProj.setKind(SpriteKind.Bossprojectile)
-        } else if (Boss1.vx > 0) {
-            xDirection = 100
-            yDirection = 0
-            BossProj = sprites.createProjectileFromSprite(img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . 4 4 . . . . . . . 
-                . . . . . . 4 5 5 4 . . . . . . 
-                . . . . . . 2 5 5 2 . . . . . . 
-                . . . . . . . 2 2 . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                `, Boss1, xDirection, yDirection)
-            BossProj.setKind(SpriteKind.Bossprojectile)
-        } else if (Boss1.vy < 0) {
-            xDirection = 0
-            yDirection = 100
-            BossProj = sprites.createProjectileFromSprite(img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . 4 4 . . . . . . . 
-                . . . . . . 4 5 5 4 . . . . . . 
-                . . . . . . 2 5 5 2 . . . . . . 
-                . . . . . . . 2 2 . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                `, Boss1, xDirection, yDirection)
-            BossProj.setKind(SpriteKind.Bossprojectile)
-        } else if (Boss1.vy > 0) {
-            xDirection = 0
-            yDirection = -100
-            BossProj = sprites.createProjectileFromSprite(img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . 4 4 . . . . . . . 
-                . . . . . . 4 5 5 4 . . . . . . 
-                . . . . . . 2 5 5 2 . . . . . . 
-                . . . . . . . 2 2 . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                `, Boss1, xDirection, yDirection)
-            BossProj.setKind(SpriteKind.Bossprojectile)
-        }
-        pause(1000)
-    }
 }
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (Warrior.isHittingTile(CollisionDirection.Bottom)) {
@@ -517,106 +425,68 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Boss, function (sprite, othe
 function ChangeLevel (LevelNumber: number) {
     if (LevelNumber == 1) {
         info.startCountup()
+        game.splash("You are entering level 1")
         tiles.setCurrentTilemap(tilemap`level1`)
+        spawnBoss()
     } else if (LevelNumber == 2) {
-        sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Cage)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Meteor)
         info.changeLifeBy(1)
         game.splash("You are entering level 2")
-        tiles.setCurrentTilemap(tilemap`level2`)
-    } else if (LevelNumber == 3) {
         sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
         sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Meteor)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Cage)
-        tiles.setCurrentTilemap(tilemap`BossFight1`)
+        tiles.setCurrentTilemap(tilemap`level2`)
+        spawnBoss()
+    } else if (LevelNumber == 3) {
+        info.changeLifeBy(1)
+        game.splash("You are entering level 3")
+        sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
+        sprites.destroyAllSpritesOfKind(SpriteKind.Food)
+        tiles.setCurrentTilemap(tilemap`level0`)
         spawnBoss()
     } else if (LevelNumber == 4) {
-        info.setLife(3)
+        info.changeLifeBy(1)
+        game.splash("You are entering level 4")
         sprites.destroyAllSpritesOfKind(SpriteKind.Food)
         sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Cage)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Meteor)
-        game.splash("You are entering level 4")
-        tiles.setCurrentTilemap(tilemap`level0`)
+        tiles.setCurrentTilemap(tilemap`level4`)
+        spawnBoss()
     } else if (LevelNumber == 5) {
         sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
         sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Cage)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Meteor)
         info.changeLifeBy(1)
         game.splash("You are entering level 5")
-        tiles.setCurrentTilemap(tilemap`level4`)
-    } else if (LevelNumber == 6) {
-        sprites.destroyAllSpritesOfKind(SpriteKind.Enemy)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Cage)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Food)
-        sprites.destroyAllSpritesOfKind(SpriteKind.Meteor)
-        info.changeLifeBy(1)
-        game.splash("You are entering level 6")
         tiles.setCurrentTilemap(tilemap`level5`)
+        spawnBoss()
     }
     tiles.placeOnRandomTile(Warrior, sprites.dungeon.collectibleRedCrystal)
 }
 statusbars.onZero(StatusBarKind.EnemyHealth, function (status) {
+    BossAlive = false
     sprites.destroy(Boss1, effects.disintegrate, 500)
     sprites.destroy(statusbar)
-    game.splash("You defeated the boss!")
-    CurrentLevel += 1
-    ChangeLevel(CurrentLevel)
+    info.changeScoreBy(10)
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.chestClosed, function (sprite, location) {
-    info.pauseCountup()
-    game.gameOver(true)
-    game.setGameOverScoringType(game.ScoringType.HighScore)
+    if (BossAlive == false) {
+        info.pauseCountup()
+        game.gameOver(true)
+        game.setGameOverScoringType(game.ScoringType.HighScore)
+    }
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava1, function (sprite, location) {
     info.changeLifeBy(-1)
     tiles.placeOnRandomTile(Warrior, sprites.dungeon.collectibleRedCrystal)
 })
 info.onLifeZero(function () {
-    game.splash("You died but you made it to level", CurrentLevel)
+    game.splash("Levels finished", CurrentLevel - 1)
     game.gameOver(false)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     sprites.destroy(otherSprite)
     info.changeScoreBy(1)
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Cage, function (sprite, otherSprite) {
-    sprites.destroy(otherSprite)
-    Ghost = sprites.create(img`
-        ........................
-        ........................
-        ........................
-        ........................
-        ..........ffff..........
-        ........ff1111ff........
-        .......fb111111bf.......
-        .......f11111111f.......
-        ......fd11111111df......
-        ......fd11111111df......
-        ......fddd1111dddf......
-        ......fbdbfddfbdbf......
-        ......fcdcf11fcdcf......
-        .......fb111111bf.......
-        ......fffcdb1bdffff.....
-        ....fc111cbfbfc111cf....
-        ....f1b1b1ffff1b1b1f....
-        ....fbfbffffffbfbfbf....
-        .........ffffff.........
-        ...........fff..........
-        ........................
-        ........................
-        ........................
-        ........................
-        `, SpriteKind.Enemy)
-    Ghost.setPosition(Warrior.x, Warrior.y - 40)
-    Ghost.follow(Warrior, 50)
-})
 sprites.onOverlap(SpriteKind.Bossprojectile, SpriteKind.Player, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
+    pause(1000)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite)
@@ -624,24 +494,26 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     info.changeScoreBy(2)
 })
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
-    CurrentLevel += 1
-    ChangeLevel(CurrentLevel)
+    if (BossAlive == false) {
+        CurrentLevel += 1
+        ChangeLevel(CurrentLevel)
+        statusbar.value += 25
+    }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite)
     info.changeLifeBy(-1)
 })
-let Meteorite: Sprite = null
-let Coin: Sprite = null
-let GhostCage: Sprite = null
-let Ghost: Sprite = null
-let SwordSlash: Sprite = null
 let BossProj: Sprite = null
 let yDirection = 0
 let xDirection = 0
+let Coin: Sprite = null
+let Ghost: Sprite = null
+let SwordSlash: Sprite = null
 let statusbar: StatusBarSprite = null
 let bossHealth: StatusBarSprite = null
 let Boss1: Sprite = null
+let BossAlive = false
 let CurrentLevel = 0
 let Warrior: Sprite = null
 Warrior = sprites.create(img`
@@ -669,41 +541,42 @@ let PixelToMetres = 30
 CurrentLevel = 1
 let Gravity = PixelToMetres * 9.8
 Warrior.ay = Gravity
-info.setLife(3)
+info.setLife(5)
 info.setScore(0)
 scene.cameraFollowSprite(Warrior)
 game.splash("Use WASD or the arrow keys to move", "Press space to make sword slashes to defeat enemies")
 ChangeLevel(1)
 forever(function () {
     for (let value of tiles.getTilesByType(assets.tile`myTile3`)) {
-        GhostCage = sprites.create(img`
+        Ghost = sprites.create(img`
             ........................
             ........................
             ........................
             ........................
-            ....aaaaaaaaaaaaaaaa....
-            ....a.a.af1a11afa..a....
-            ....a.afa11a11aba..a....
-            ....a.afa11a11a1a..a....
-            ....a.ada11a11a1af.a....
-            ....a.ada11a11a1af.a....
-            ....a.adad1a11adaf.a....
-            ....a.ababfadfadaf.a....
-            ....a.acacfa1fadaf.a....
-            ....a.afa11a11aba..a....
-            ....a.afacda1bafaffa....
-            ....aca1acbabfa1a1ca....
-            ....a1a1a1faffabab1a....
-            ....ababaffaffafafba....
-            ....a.a.affaffa.a..a....
-            ....aaaaaaaaaaaaaaaa....
+            ..........ffff..........
+            ........ff1111ff........
+            .......fb111111bf.......
+            .......f11111111f.......
+            ......fd11111111df......
+            ......fd11111111df......
+            ......fddd1111dddf......
+            ......fbdbfddfbdbf......
+            ......fcdcf11fcdcf......
+            .......fb111111bf.......
+            ......fffcdb1bdffff.....
+            ....fc111cbfbfc111cf....
+            ....f1b1b1ffff1b1b1f....
+            ....fbfbffffffbfbfbf....
+            .........ffffff.........
+            ...........fff..........
             ........................
             ........................
             ........................
             ........................
-            `, SpriteKind.Cage)
-        tiles.placeOnTile(GhostCage, value)
+            `, SpriteKind.Enemy)
+        tiles.placeOnTile(Ghost, value)
         tiles.setTileAt(value, assets.tile`transparency16`)
+        Ghost.follow(Warrior, 45)
     }
     for (let value2 of tiles.getTilesByType(assets.tile`myTile1`)) {
         Coin = sprites.create(img`
@@ -878,32 +751,95 @@ forever(function () {
     100,
     characterAnimations.rule(Predicate.MovingRight)
     )
-    for (let value3 of tiles.getTilesByType(assets.tile`myTile2`)) {
-        Meteorite = sprites.create(img`
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . . . . . . . . . . . . 
-            . . . . . b c b a c . . . . . . 
-            . . . . c c b c f a c . . . . . 
-            . . . . a f b b b a c b . . . . 
-            . . . c a f f b a f c c . . . . 
-            . . . b c f f a f f c b . . . . 
-            . . . . b b b a f a b . . . . . 
-            . . . . . b c b b c . . . . . . 
+    if (Boss1.vx < 0) {
+        xDirection = -100
+        yDirection = 0
+        BossProj = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
-            `, SpriteKind.Meteor)
-        tiles.placeOnTile(Meteorite, value3)
-        tiles.setTileAt(value3, assets.tile`transparency16`)
-        animation.runMovementAnimation(
-        Meteorite,
-        "c 0 -100 0 100 0 0",
-        3000,
-        true
-        )
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . 4 4 . . . . . . . 
+            . . . . . . 4 5 5 4 . . . . . . 
+            . . . . . . 2 5 5 2 . . . . . . 
+            . . . . . . . 2 2 . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, Boss1, xDirection, yDirection)
+        BossProj.setKind(SpriteKind.Bossprojectile)
+    } else if (Boss1.vx > 0) {
+        xDirection = 100
+        yDirection = 0
+        BossProj = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . 4 4 . . . . . . . 
+            . . . . . . 4 5 5 4 . . . . . . 
+            . . . . . . 2 5 5 2 . . . . . . 
+            . . . . . . . 2 2 . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, Boss1, xDirection, yDirection)
+        BossProj.setKind(SpriteKind.Bossprojectile)
+    } else if (Boss1.vy < 0) {
+        xDirection = 0
+        yDirection = 100
+        BossProj = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . 4 4 . . . . . . . 
+            . . . . . . 4 5 5 4 . . . . . . 
+            . . . . . . 2 5 5 2 . . . . . . 
+            . . . . . . . 2 2 . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, Boss1, xDirection, yDirection)
+        BossProj.setKind(SpriteKind.Bossprojectile)
+    } else if (Boss1.vy > 0) {
+        xDirection = 0
+        yDirection = -100
+        BossProj = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . 4 4 . . . . . . . 
+            . . . . . . 4 5 5 4 . . . . . . 
+            . . . . . . 2 5 5 2 . . . . . . 
+            . . . . . . . 2 2 . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, Boss1, xDirection, yDirection)
+        BossProj.setKind(SpriteKind.Bossprojectile)
     }
+    pause(1500)
+    sprites.destroy(BossProj)
 })
